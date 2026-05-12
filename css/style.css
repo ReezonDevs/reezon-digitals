@@ -1,0 +1,2389 @@
+/* ============================================================
+   REEZON DIGITALS — style.css
+   Sections:
+     1. CSS Variables
+     2. Reset & Base
+     3. Navbar
+     4. Hero Section
+     5. Animations
+     6. Responsive (Tablet → Mobile)
+============================================================ */
+
+
+/* ============================================================
+   1. CSS VARIABLES
+   Change any value here and it updates the entire site.
+============================================================ */
+:root {
+  /* Brand */
+  --blue:          #0f75bc;
+  --blue-dark:     #0c5f99;
+  --blue-glow:     rgba(15, 117, 188, 0.15);
+  --black:         #0d0d0d;
+  --gray-600:      #4b5563;
+  --gray-400:      #9ca3af;
+  --white:         #ffffff;
+
+  /* Typography */
+  --font-head:   'Manrope', sans-serif;
+  --font-body:   'DM Sans', sans-serif;
+
+  /* Layout */
+  --nav-h:       72px;       /* Fixed navbar height */
+  --max-w:       1160px;     /* Page max-width */
+  --radius:      10px;
+
+  /* Motion */
+  --ease:        cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --fast:        0.18s;
+  --normal:      0.32s;
+}
+
+
+/* ============================================================
+   2. RESET & BASE
+============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Offset anchor links so fixed navbar doesn't cover content */
+  scroll-padding-top: var(--nav-h);
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--black);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img { display: block; max-width: 100%; }
+a   { text-decoration: none; color: inherit; }
+
+
+/* ============================================================
+   3. NAVBAR
+============================================================ */
+.navbar {
+  position: fixed;
+  inset: 0 0 auto 0;         /* top:0; left:0; right:0 */
+  z-index: 900;
+  height: var(--nav-h);
+  background: var(--white);
+  /* Subtle bottom border — becomes shadow on scroll via JS class */
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  transition: box-shadow var(--normal) var(--ease);
+}
+
+/* Added by JS when page scrolls past 10px */
+.navbar.scrolled {
+  box-shadow: 0 2px 24px rgba(0,0,0,0.08);
+}
+
+/* Inner wrapper: max-width + side padding */
+.nav-container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ── Logo ── */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* Actual logo image — adjust height to fit your logo proportions */
+.logo-img {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  /* Hide broken-image icon when file isn't present yet */
+  color: transparent;
+}
+
+/* Text fallback: shown when logo.png is missing.
+   Once your logo image loads, this hides automatically. */
+.logo-fallback {
+  font-family: var(--font-head);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  /* Hide fallback once image loads (handled by JS) */
+}
+
+/* The blue "R" square icon next to the text */
+.logo-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--blue);
+  color: var(--white);
+  font-size: 0.95rem;
+  font-weight: 800;
+  border-radius: 6px;
+}
+
+/* ── Nav links ── */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.nav-link {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--gray-600);
+  letter-spacing: 0.01em;
+  position: relative;
+  padding-bottom: 2px;
+  transition: color var(--fast);
+}
+
+/* Sliding underline on hover / active */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--blue);
+  border-radius: 2px;
+  transition: width var(--normal) var(--ease);
+}
+
+.nav-link:hover        { color: var(--black); }
+.nav-link:hover::after { width: 100%; }
+
+/* Active link — set by JS scroll-spy */
+.nav-link.active              { color: var(--black); }
+.nav-link.active::after       { width: 100%; }
+
+/* ── Hamburger (mobile only) ── */
+.hamburger {
+  display: none;           /* Hidden on desktop */
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 17px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1000;
+}
+
+.bar {
+  width: 100%;
+  height: 2px;
+  background: var(--black);
+  border-radius: 2px;
+  transition: transform var(--normal) var(--ease),
+              opacity   var(--normal) var(--ease);
+}
+
+/* Bars animate into an X when .open is toggled */
+.hamburger.open .bar:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.hamburger.open .bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.open .bar:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+
+/* ============================================================
+   4. HERO SECTION
+============================================================ */
+.hero {
+  position: relative;
+  min-height: calc(100svh - var(--nav-h)); /* Full viewport minus navbar */
+  padding-top: var(--nav-h);
+  background: var(--white);
+  display: flex;
+  align-items: flex-start;
+  overflow: hidden;
+}
+
+/* Centres and constrains the content */
+.hero-inner {
+  max-width: var(--max-w);
+  width: 100%;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Text block ── */
+.hero-text {
+  text-align: center;
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+/* Small label above the headline */
+.hero-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--blue);
+  opacity: 0;
+  animation: fadeUp 0.6s var(--ease) forwards 0.1s;
+}
+
+/* Main headline — large, heavy, matching the UI */
+.hero-headline {
+  font-family: var(--font-head);
+  font-size: clamp(2.8rem, 6.5vw, 5.2rem); /* Fluid: shrinks on small screens */
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.02em;   /* Tight tracking = modern editorial feel */
+  color: var(--black);
+  opacity: 0;
+  animation: fadeUp 0.7s var(--ease) forwards 0.25s;
+}
+
+/* Supporting paragraph */
+.hero-subtext {
+  font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+  font-weight: 400;
+  color: var(--gray-600);
+  line-height: 1.75;
+  max-width: 520px;
+  opacity: 0;
+  animation: fadeUp 0.7s var(--ease) forwards 0.4s;
+}
+
+/* ── CTA group ── */
+.cta-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  opacity: 0;
+  animation: fadeUp 0.7s var(--ease) forwards 0.55s;
+}
+
+/* PRIMARY: solid black "Explore" button (matches your UI) */
+.btn-explore {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: var(--radius);
+  letter-spacing: 0.01em;
+  transition: background var(--fast), transform var(--fast), box-shadow var(--fast);
+  overflow: hidden;   /* Keeps arrow clipped inside button */
+}
+
+.btn-explore:hover {
+  background: #1a1a1a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+}
+
+.btn-explore:active { transform: translateY(0); }
+
+/* Arrow icon inside the button */
+.explore-arrow {
+  display: flex;
+  align-items: center;
+  width: 18px;
+  height: 18px;
+  transition: transform var(--normal) var(--ease);
+}
+
+.explore-arrow svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Arrow slides right on hover */
+.btn-explore:hover .explore-arrow {
+  transform: translateX(4px);
+}
+
+/* SECONDARY: WhatsApp ghost button */
+.btn-wa {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.5rem;
+  border: 1.5px solid rgba(0,0,0,0.12);
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--gray-600);
+  transition: border-color var(--fast), color var(--fast),
+              background var(--fast), transform var(--fast);
+}
+
+.btn-wa:hover {
+  border-color: #25D366;
+  color: #25D366;
+  background: rgba(37,211,102,0.05);
+  transform: translateY(-2px);
+}
+
+.wa-icon {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+
+/* ── Hero image block ── */
+.hero-img-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+  margin: 2.5rem auto 0;
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  animation: riseIn 0.9s var(--ease) forwards 0.65s;
+}
+
+/* Blue radial glow behind the person — purely decorative */
+.img-glow {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 55%;
+  background: radial-gradient(ellipse at center, var(--blue-glow) 0%, transparent 72%);
+  border-radius: 50%;
+  filter: blur(32px);
+  pointer-events: none;
+}
+
+/* The VR-person image */
+.hero-img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 580px;
+  height: auto;
+  object-fit: contain;
+  object-position: bottom;
+  /* Continuous floating animation — subtle life to the page */
+  animation: riseIn 0.9s var(--ease) forwards 0.65s,
+             float 5s ease-in-out infinite 1.6s;
+  opacity: 0; /* starts hidden; riseIn animates it in */
+}
+
+/* ── Decorative dots ── */
+.dot {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Top-left dot */
+.dot-tl {
+  width: 260px;
+  height: 260px;
+  top: -60px;
+  left: -80px;
+  background: radial-gradient(circle, rgba(15,117,188,0.07) 0%, transparent 70%);
+}
+
+/* Bottom-right dot */
+.dot-br {
+  width: 200px;
+  height: 200px;
+  bottom: 40px;
+  right: -50px;
+  background: radial-gradient(circle, rgba(15,117,188,0.06) 0%, transparent 70%);
+}
+
+
+/* ============================================================
+   5. ANIMATIONS
+============================================================ */
+
+/* Staggered entrance: elements slide up and fade in */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Hero image: rises from below and fades in */
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Continuous floating motion for the hero image */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}
+
+
+/* ============================================================
+   6. RESPONSIVE BREAKPOINTS
+============================================================ */
+
+/* ── Tablet: 768px–1024px ── */
+@media (max-width: 1024px) {
+  .hero-inner { padding-top: 3rem; }
+  .hero-img-wrap { max-width: 560px; }
+}
+
+/* ── Mobile: up to 767px ── */
+@media (max-width: 767px) {
+
+  /* Show hamburger, hide desktop links */
+  .hamburger  { display: flex; }
+
+  /* Mobile nav: full-screen overlay panel */
+  .nav-links {
+    position: fixed;
+    inset: 0;
+    background: var(--white);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+    z-index: 800;
+    /* Slides in from right */
+    transform: translateX(100%);
+    transition: transform 0.38s var(--ease);
+  }
+
+  /* .open added by JS to slide the panel in */
+  .nav-links.open {
+    transform: translateX(0);
+  }
+
+  .nav-link {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--black);
+  }
+
+  /* Hero adjustments */
+  .hero-inner { padding: 2.5rem 1.25rem 0; }
+
+  .hero-subtext { font-size: 0.97rem; }
+
+  /* Stack CTA buttons on mobile */
+  .cta-group {
+    flex-direction: column;
+    width: 100%;
+    max-width: 340px;
+  }
+
+  .btn-explore,
+  .btn-wa {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-img-wrap { max-width: 100%; margin-top: 2rem; }
+}
+
+/* ── Small phones (iPhone SE etc.) ── */
+@media (max-width: 380px) {
+  .hero-headline { font-size: 2.4rem; }
+}
+
+
+/* ============================================================
+   HERO — NO IMAGE VERSION (appended)
+   Replaces .hero-img-wrap, .img-glow, .dot styles.
+   All previous navbar + button styles remain unchanged.
+============================================================ */
+
+/* Full-viewport hero, white base */
+.hero {
+  position: relative;
+  min-height: calc(100svh - var(--nav-h));
+  padding-top: var(--nav-h);
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Canvas covers the entire hero — JS draws dots on it */
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Large ambient blue glow — gives depth without any image */
+.hero-blob {
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(15,117,188,0.10) 0%, transparent 68%);
+  pointer-events: none;
+  z-index: 0;
+  animation: blobPulse 7s ease-in-out infinite;
+}
+
+@keyframes blobPulse {
+  0%, 100% { transform: translateX(-50%) scale(1);    opacity: 1; }
+  50%       { transform: translateX(-50%) scale(1.08); opacity: 0.75; }
+}
+
+/* Content sits above canvas and blob */
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: var(--max-w);
+  width: 100%;
+  padding: 3rem 2rem 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+}
+
+/* ── Floating badge ── */
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.45rem 1.1rem;
+  border: 1px solid rgba(15,117,188,0.25);
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--blue);
+  background: rgba(15,117,188,0.05);
+  opacity: 0;
+  animation: fadeUp 0.6s var(--ease) forwards 0.1s;
+}
+
+/* Pulsing dot inside badge */
+.badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--blue);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0   rgba(15,117,188,0.5); }
+  50%       { box-shadow: 0 0 0 5px rgba(15,117,188,0);   }
+}
+
+/* ── Headline ── */
+.hero-headline {
+  font-family: var(--font-head);
+  font-size: clamp(2.8rem, 6.5vw, 5.5rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: var(--black);
+  opacity: 0;
+  animation: fadeUp 0.75s var(--ease) forwards 0.28s;
+}
+
+/* Blue "to Fruition." span */
+.headline-blue {
+  color: var(--blue);
+}
+
+/* Blinking cursor for typewriter effect */
+.type-cursor {
+  display: inline-block;
+  color: var(--blue);
+  font-weight: 300;
+  animation: blink 0.9s step-end infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── Subtext ── */
+.hero-subtext {
+  font-size: clamp(0.97rem, 1.9vw, 1.12rem);
+  font-weight: 400;
+  color: var(--gray-600);
+  line-height: 1.78;
+  max-width: 520px;
+  opacity: 0;
+  animation: fadeUp 0.75s var(--ease) forwards 0.44s;
+}
+
+/* ── CTA group ── */
+.cta-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  opacity: 0;
+  animation: fadeUp 0.75s var(--ease) forwards 0.58s;
+}
+
+/* ── Stats bar ── */
+.hero-stats {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  margin-top: 1rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(0,0,0,0.07);
+  opacity: 0;
+  animation: fadeUp 0.75s var(--ease) forwards 0.72s;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.stat-num {
+  font-family: var(--font-head);
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--black);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--gray-400);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Thin vertical divider between stats */
+.stat-divider {
+  width: 1px;
+  height: 36px;
+  background: rgba(0,0,0,0.1);
+  flex-shrink: 0;
+}
+
+/* ── Scroll cue ── */
+.scroll-cue {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  width: 38px;
+  height: 38px;
+  border: 1.5px solid rgba(0,0,0,0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-400);
+  transition: border-color var(--fast), color var(--fast);
+  animation: scrollBounce 2.4s ease-in-out infinite 1.5s;
+}
+
+.scroll-cue svg { width: 15px; height: 15px; }
+
+.scroll-cue:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0);  }
+  50%       { transform: translateX(-50%) translateY(6px); }
+}
+
+/* ── Responsive overrides ── */
+@media (max-width: 767px) {
+  .hero-inner { padding: 2rem 1.25rem 4.5rem; gap: 1.25rem; }
+
+  .hero-stats { gap: 1.5rem; }
+  .stat-num   { font-size: 1.5rem; }
+
+  .cta-group        { flex-direction: column; width: 100%; max-width: 340px; }
+  .btn-explore,
+  .btn-wa           { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 380px) {
+  .hero-headline { font-size: 2.4rem; }
+  .hero-stats    { flex-wrap: wrap; justify-content: center; }
+}
+
+
+/* ============================================================
+   SERVICES SECTION
+============================================================ */
+
+.services {
+  background: #0a0a0a;           /* Near-black matching your UI */
+  padding: 7rem 0;
+  overflow: hidden;
+}
+
+/* Two-column layout with divider in the middle */
+.services-container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: 1fr 2px 1.4fr; /* left | divider | right */
+  gap: 0 4rem;
+  align-items: start;
+}
+
+/* ── LEFT COLUMN ── */
+.services-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  padding-top: 0.5rem;
+}
+
+/* "What We Do?" — large, white, bold */
+.services-headline {
+  font-family: var(--font-head);
+  font-size: clamp(3rem, 5.5vw, 5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--white);
+}
+
+/* Image wrapper — rounded corners, overflow hidden for overlay */
+.services-img-wrap {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  max-width: 360px;
+}
+
+.services-img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  border-radius: 16px;
+  transition: transform 0.5s var(--ease);
+}
+
+.services-img-wrap:hover .services-img {
+  transform: scale(1.04);       /* Subtle zoom on hover */
+}
+
+/* Blue overlay on image hover */
+.services-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 117, 188, 0.35);
+  border-radius: 16px;
+  opacity: 0;
+  transition: opacity var(--normal) var(--ease);
+}
+
+.services-img-wrap:hover .services-img-overlay {
+  opacity: 1;
+}
+
+/* ── CENTRE DIVIDER ── */
+.services-divider {
+  width: 2px;
+  /* Gradient: invisible top, solid white middle, invisible bottom */
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255,255,255,0.15) 20%,
+    rgba(255,255,255,0.15) 80%,
+    transparent 100%
+  );
+  align-self: stretch;           /* Stretches full height of grid row */
+  min-height: 400px;
+}
+
+/* ── RIGHT COLUMN ── */
+.services-right {
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.25rem;
+}
+
+/* Individual service row */
+.service-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  padding: 1.6rem 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px;
+  cursor: default;
+  transition: background var(--normal) var(--ease),
+              padding-left var(--normal) var(--ease);
+
+  /* Start hidden — JS adds .visible to trigger the animation */
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.5s var(--ease),
+              transform 0.5s var(--ease),
+              background 0.25s var(--ease),
+              padding-left 0.25s var(--ease);
+}
+
+/* Visible state added by IntersectionObserver in JS */
+.service-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hover: indent and blue tint */
+.service-item:hover {
+  background: rgba(15,117,188,0.08);
+  padding-left: 1.5rem;
+}
+
+/* Hover: number turns blue */
+.service-item:hover .service-num {
+  color: var(--blue);
+}
+
+/* Hover: title turns white (brighter) */
+.service-item:hover .service-title {
+  color: var(--white);
+}
+
+/* Number label — 01, 02 … */
+.service-num {
+  font-family: var(--font-head);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.25);
+  margin-top: 4px;
+  flex-shrink: 0;
+  transition: color var(--fast);
+}
+
+/* Service title */
+.service-title {
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.90);
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.01em;
+  transition: color var(--fast);
+}
+
+/* Service description */
+.service-text {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.65;
+  font-weight: 400;
+}
+
+/* ── Services CTA button ── */
+.services-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 2rem;
+  margin-left: 1rem;
+  padding: 0.85rem 1.75rem;
+  background: var(--blue);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 600;
+  border-radius: var(--radius);
+  letter-spacing: 0.01em;
+  align-self: flex-start;
+  transition: background var(--fast), transform var(--fast), box-shadow var(--fast);
+}
+
+.services-cta:hover {
+  background: var(--blue-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(15,117,188,0.4);
+}
+
+.services-cta:hover .services-cta-arrow {
+  transform: translateX(4px);
+}
+
+.services-cta-arrow {
+  width: 17px;
+  height: 17px;
+  transition: transform var(--normal) var(--ease);
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  /* Stack into single column on tablet */
+  .services-container {
+    grid-template-columns: 1fr;
+    gap: 3rem 0;
+  }
+
+  .services-divider { display: none; }
+
+  .services-headline { font-size: 3rem; }
+
+  .services-img-wrap { max-width: 100%; }
+  .services-img      { height: 240px; }
+}
+
+@media (max-width: 767px) {
+  .services          { padding: 5rem 0; }
+  .services-headline { font-size: 2.6rem; }
+  .service-item      { padding: 1.3rem 0.5rem; }
+  .services-cta      { margin-left: 0.5rem; width: calc(100% - 1rem); justify-content: center; }
+}
+
+
+/* ============================================================
+   ABOUT SECTION
+============================================================ */
+
+.about {
+  background: var(--white);
+  padding: 7rem 0;
+  overflow: hidden;
+}
+
+/* Two equal columns side by side */
+.about-container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+/* ── Scroll reveal base state ──
+   JS adds .visible to trigger the animation */
+.about-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+
+.about-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Right column gets a slight delay so it follows the left */
+.about-right.visible {
+  transition-delay: 0.15s;
+}
+
+/* ── LEFT COLUMN ── */
+.about-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* "Our Mission" pill tag */
+.about-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 1rem;
+  border: 1.5px solid rgba(15,117,188,0.3);
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue);
+  background: rgba(15,117,188,0.05);
+  align-self: flex-start;
+}
+
+/* "About Us" headline with blue left border */
+.about-headline {
+  font-family: var(--font-head);
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 800;
+  color: var(--black);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  padding-left: 1rem;
+  border-left: 4px solid var(--blue);  /* Blue accent bar matching brand */
+}
+
+/* Body paragraphs */
+.about-para {
+  font-size: 1rem;
+  color: var(--gray-600);
+  line-height: 1.8;
+  font-weight: 400;
+}
+
+/* ── Fact chips row ── */
+.about-chips {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 1rem;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 10px;
+  background: var(--gray-100);
+  transition: border-color var(--fast), box-shadow var(--fast);
+}
+
+.chip:hover {
+  border-color: rgba(15,117,188,0.3);
+  box-shadow: 0 2px 12px rgba(15,117,188,0.08);
+}
+
+.chip-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+/* Stack label above value */
+.chip > div {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.chip-label {
+  font-size: 0.67rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+}
+
+.chip-value {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--black);
+}
+
+/* ── RIGHT COLUMN: Image ── */
+.about-right {
+  position: relative;
+}
+
+.about-img-wrap {
+  position: relative;
+  border-radius: 20px;
+  overflow: visible;  /* Allows corner accents to poke outside */
+}
+
+/* The photo itself */
+.about-img {
+  width: 100%;
+  height: 480px;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 20px;
+  display: block;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.10);
+  transition: transform 0.5s var(--ease);
+}
+
+.about-img-wrap:hover .about-img {
+  transform: scale(1.02);
+}
+
+/* Blue corner bracket accents — pure CSS, no image needed */
+.about-corner {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Top-left bracket */
+.about-corner-tl {
+  top: -10px;
+  left: -10px;
+  border-top: 3px solid var(--blue);
+  border-left: 3px solid var(--blue);
+  border-radius: 4px 0 0 0;
+}
+
+/* Bottom-right bracket */
+.about-corner-br {
+  bottom: -10px;
+  right: -10px;
+  border-bottom: 3px solid var(--blue);
+  border-right: 3px solid var(--blue);
+  border-radius: 0 0 4px 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  /* Stack text above image on tablet */
+  .about-container {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .about-img  { height: 360px; }
+}
+
+@media (max-width: 767px) {
+  .about           { padding: 5rem 0; }
+  .about-headline  { font-size: 2.2rem; }
+  .about-img       { height: 280px; }
+  .about-chips     { gap: 0.75rem; }
+}
+
+
+/* ============================================================
+   TESTIMONIALS SECTION
+============================================================ */
+
+.testimonials {
+  background: var(--gray-100);
+  padding: 7rem 0;
+  overflow: hidden;
+}
+
+.testi-container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+
+/* ── Section header ── */
+.testi-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+.testi-reveal.visible { opacity: 1; transform: translateY(0); }
+
+.testi-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* Blue accent bar above headline — matches your UI green bar,
+   recoloured to Reezon brand blue */
+.testi-accent-bar {
+  width: 44px;
+  height: 3px;
+  background: var(--blue);
+  border-radius: 2px;
+}
+
+.testi-headline {
+  font-family: var(--font-head);
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 800;
+  color: var(--black);
+  letter-spacing: -0.02em;
+}
+
+.testi-subhead {
+  font-size: 0.92rem;
+  color: var(--gray-400);
+  font-weight: 400;
+}
+
+/* ── Main body: avatars left, quote right ── */
+.testi-body {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+/* ── LEFT: Avatar timeline ── */
+.testi-avatars {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  padding-left: 0.5rem;
+}
+
+/* Vertical line running through the avatars */
+.testi-avatars::before {
+  content: '';
+  position: absolute;
+  left: 28px;             /* Aligns with avatar centre */
+  top: 28px;
+  bottom: 28px;
+  width: 1.5px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(15,117,188,0.2) 20%,
+    rgba(15,117,188,0.2) 80%,
+    transparent
+  );
+  z-index: 0;
+}
+
+/* Each avatar row is a button for accessibility + click events */
+.avatar-btn {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 0.75rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 12px;
+  text-align: left;
+  position: relative;
+  z-index: 1;
+  transition: background var(--fast);
+  width: 100%;
+}
+
+.avatar-btn:hover { background: rgba(15,117,188,0.05); }
+
+/* Avatar image/initials circle */
+.avatar-img-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(15,117,188,0.12);
+  border: 2.5px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: border-color var(--normal), transform var(--normal),
+              width var(--normal), height var(--normal);
+}
+
+/* Real photo inside (if used) */
+.avatar-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Initials text inside avatar */
+.avatar-initials {
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--blue);
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
+/* Name + star rating stack */
+.avatar-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  opacity: 0.55;
+  transition: opacity var(--normal);
+}
+
+.avatar-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--black);
+  white-space: nowrap;
+}
+
+.avatar-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: var(--gray-400);
+}
+
+.star {
+  width: 12px;
+  height: 12px;
+  color: var(--blue);
+  flex-shrink: 0;
+}
+
+/* ── ACTIVE avatar state ── */
+.avatar-btn.active .avatar-img-wrap {
+  width: 64px;
+  height: 64px;
+  border-color: var(--blue);
+  background: rgba(15,117,188,0.15);
+  box-shadow: 0 0 0 4px rgba(15,117,188,0.12);
+}
+
+.avatar-btn.active .avatar-meta { opacity: 1; }
+
+.avatar-btn.active .avatar-name {
+  font-size: 1rem;
+  color: var(--black);
+}
+
+.avatar-btn.active .star { color: var(--blue); }
+
+/* ── RIGHT: Quote area ── */
+.testi-quote-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2.5rem 2.5rem 2rem;
+  background: var(--white);
+  border-radius: 20px;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.06);
+  min-height: 280px;
+}
+
+/* Large decorative opening quote mark */
+.testi-bigquote {
+  font-family: Georgia, serif;
+  font-size: 6rem;
+  line-height: 0.6;
+  color: var(--blue);
+  opacity: 0.18;
+  position: absolute;
+  top: 1.5rem;
+  left: 2rem;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Quote panels container */
+.testi-quotes {
+  position: relative;
+  min-height: 180px;
+}
+
+/* Individual quote — hidden by default */
+.testi-quote {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
+  pointer-events: none;
+}
+
+/* Active quote: fully visible */
+.testi-quote.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  position: relative;  /* Takes up space so card height adapts */
+}
+
+/* Quote body text */
+.quote-text {
+  font-size: 1.05rem;
+  color: var(--gray-600);
+  line-height: 1.85;
+  font-style: italic;
+  padding-top: 1.5rem;  /* Clears the big quotemark */
+}
+
+/* Author name + role */
+.quote-author {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.quote-name {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--black);
+}
+
+.quote-role {
+  font-size: 0.78rem;
+  color: var(--gray-400);
+  font-weight: 400;
+}
+
+/* ── Dot navigation ── */
+.testi-dots {
+  display: flex;
+  gap: 8px;
+  align-self: flex-start;
+}
+
+.testi-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,0.15);
+  cursor: pointer;
+  padding: 0;
+  transition: background var(--fast), width var(--normal), border-radius var(--normal);
+}
+
+/* Active dot stretches into a pill shape */
+.testi-dot.active {
+  width: 24px;
+  border-radius: 4px;
+  background: var(--blue);
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .testi-body {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  /* Avatars go horizontal on tablet */
+  .testi-avatars {
+    flex-direction: row;
+    padding-left: 0;
+    overflow-x: auto;
+    gap: 0.5rem;
+  }
+
+  .testi-avatars::before { display: none; }
+
+  .avatar-btn { flex-direction: column; align-items: center; text-align: center; }
+  .avatar-meta { align-items: center; }
+}
+
+@media (max-width: 767px) {
+  .testimonials { padding: 5rem 0; }
+  .testi-quote-wrap { padding: 2rem 1.5rem 1.5rem; }
+  .quote-text { font-size: 0.97rem; }
+}
+
+
+/* ============================================================
+   SVG AVATAR — built-in illustrated avatars
+============================================================ */
+.avatar-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+
+/* ============================================================
+   FOOTER
+============================================================ */
+.site-footer {
+  background: var(--black);
+  padding: 2.5rem 2rem;
+}
+
+.footer-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.footer-copy {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.35);
+}
+
+.footer-tagline {
+  font-size: 0.82rem;
+  color: var(--blue);
+  font-style: italic;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .footer-inner { flex-direction: column; align-items: center; text-align: center; }
+}
+
+
+/* ============================================================
+   SCROLL-TO-TOP BUTTON
+   Fixed bottom-right; hidden until user scrolls 400px.
+   JS adds .visible class to show it.
+============================================================ */
+.scroll-top {
+  position: fixed;
+  bottom: 6.5rem;       /* Sits above the WhatsApp bubble */
+  right: 1.5rem;
+  z-index: 800;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0,0,0,0.1);
+  background: var(--white);
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity var(--normal), transform var(--normal),
+              background var(--fast), color var(--fast);
+}
+
+.scroll-top svg { width: 18px; height: 18px; }
+
+/* .visible added by JS after 400px scroll */
+.scroll-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.scroll-top:hover {
+  background: var(--blue);
+  color: var(--white);
+  border-color: var(--blue);
+}
+
+
+/* ============================================================
+   FLOATING WHATSAPP BUBBLE
+   Always visible in the bottom-right corner.
+   Label tooltip slides in on hover.
+============================================================ */
+.wa-bubble {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 900;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25D366;      /* Official WhatsApp green */
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 28px rgba(37,211,102,0.40);
+  transition: transform var(--fast), box-shadow var(--fast);
+  /* Entry animation */
+  animation: bubblePop 0.5s var(--ease) forwards 1.5s;
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+@keyframes bubblePop {
+  to { opacity: 1; transform: scale(1); }
+}
+
+.wa-bubble:hover {
+  transform: scale(1.08);
+  box-shadow: 0 10px 36px rgba(37,211,102,0.50);
+}
+
+.wa-bubble-icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+/* Tooltip label — slides in from right on hover */
+.wa-bubble-label {
+  position: absolute;
+  right: 68px;
+  white-space: nowrap;
+  background: var(--black);
+  color: var(--white);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.4rem 0.85rem;
+  border-radius: 6px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity var(--fast), transform var(--fast);
+}
+
+/* Arrow on the tooltip pointing right */
+.wa-bubble-label::after {
+  content: '';
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-right: none;
+  border-left-color: var(--black);
+}
+
+.wa-bubble:hover .wa-bubble-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+/* ============================================================
+   GLOBAL SCROLL REVEAL
+   Any element with .reveal starts hidden.
+   JS IntersectionObserver adds .visible to animate it in.
+============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s var(--ease), transform 0.65s var(--ease);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}/* ============================================================
+   FOOTER — Inspo-matched design
+============================================================ */
+
+.footer {
+  background: #0d0d0d;
+  color: var(--white);
+}
+
+/* ── TOP CTA BAND ── */
+.footer-cta-band {
+  padding: 4rem 2rem 0;
+}
+
+.footer-cta-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding-bottom: 3.5rem;
+}
+
+/* Large bold CTA headline */
+.footer-cta-headline {
+  font-family: var(--font-head);
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* Circle arrow button — matches inspo exactly */
+.footer-cta-arrow {
+  flex-shrink: 0;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  transition: background var(--normal), border-color var(--normal),
+              transform var(--fast);
+}
+
+.footer-cta-arrow svg {
+  width: 24px;
+  height: 24px;
+  transition: transform var(--normal) var(--ease);
+}
+
+.footer-cta-arrow:hover {
+  background: var(--blue);
+  border-color: var(--blue);
+  transform: scale(1.06);
+}
+
+.footer-cta-arrow:hover svg {
+  transform: translate(2px, -2px);  /* Nudge arrow on hover */
+}
+
+/* Horizontal divider line */
+.footer-divider {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+}
+
+/* ── MIDDLE: 4-col grid ── */
+.footer-main {
+  padding: 3.5rem 2rem;
+}
+
+.footer-grid {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.3fr;
+  gap: 2.5rem;
+}
+
+/* ── COL 1: Brand ── */
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.footer-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-logo-img {
+  height: 30px;
+  width: auto;
+  object-fit: contain;
+  color: transparent;
+}
+
+.footer-logo-text {
+  font-family: var(--font-head);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.footer-logo-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: var(--blue);
+  color: var(--white);
+  font-size: 0.82rem;
+  font-weight: 800;
+  border-radius: 5px;
+}
+
+.footer-tagline {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.65;
+}
+
+/* Social icons row */
+.footer-socials {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.social-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.5);
+  transition: border-color var(--fast), color var(--fast),
+              background var(--fast), transform var(--fast);
+}
+
+.social-icon svg { width: 15px; height: 15px; }
+
+.social-icon:hover {
+  border-color: var(--blue);
+  color: var(--white);
+  background: var(--blue);
+  transform: translateY(-2px);
+}
+
+/* ── Column headers ── */
+.footer-col-title {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.02em;
+}
+
+/* ── Link lists ── */
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.footer-link {
+  font-size: 0.83rem;
+  color: rgba(255,255,255,0.42);
+  font-weight: 400;
+  transition: color var(--fast);
+  line-height: 1.4;
+}
+
+.footer-link:hover { color: var(--white); }
+
+/* ── Contact column ── */
+.footer-contact-list { gap: 1rem; }
+
+.footer-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.83rem;
+  color: rgba(255,255,255,0.42);
+  line-height: 1.5;
+}
+
+.contact-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--blue);
+}
+
+/* ── BOTTOM copyright bar ── */
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 1.25rem 2rem;
+}
+
+.footer-bottom-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.footer-copy {
+  font-size: 0.76rem;
+  color: rgba(255,255,255,0.22);
+}
+
+.footer-bottom-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.footer-bottom-link {
+  font-size: 0.76rem;
+  color: rgba(255,255,255,0.3);
+  transition: color var(--fast);
+}
+
+.footer-bottom-link:hover { color: var(--white); }
+
+.footer-bottom-sep {
+  font-size: 0.76rem;
+  color: rgba(255,255,255,0.15);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+  }
+  .footer-brand { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; gap: 1.5rem; }
+}
+
+@media (max-width: 767px) {
+  .footer-cta-headline  { font-size: 2rem; }
+  .footer-cta-arrow     { width: 52px; height: 52px; }
+  .footer-cta-arrow svg { width: 20px; height: 20px; }
+  .footer-grid          { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .footer-brand         { grid-column: 1 / -1; flex-direction: column; }
+  .footer-bottom-inner  { flex-direction: column; align-items: center; text-align: center; }
+}
+
+@media (max-width: 480px) {
+  .footer-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   SCROLL-TO-TOP BUTTON
+   Fixed bottom-right; hidden until user scrolls 400px.
+   JS adds .visible class to show it.
+============================================================ */
+.scroll-top {
+  position: fixed;
+  bottom: 6.5rem;       /* Sits above the WhatsApp bubble */
+  right: 1.5rem;
+  z-index: 800;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0,0,0,0.1);
+  background: var(--white);
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity var(--normal), transform var(--normal),
+              background var(--fast), color var(--fast);
+}
+
+.scroll-top svg { width: 18px; height: 18px; }
+
+/* .visible added by JS after 400px scroll */
+.scroll-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.scroll-top:hover {
+  background: var(--blue);
+  color: var(--white);
+  border-color: var(--blue);
+}
+
+
+/* ============================================================
+   FLOATING WHATSAPP BUBBLE
+   Always visible in the bottom-right corner.
+   Label tooltip slides in on hover.
+============================================================ */
+.wa-bubble {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 900;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25D366;      /* Official WhatsApp green */
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 28px rgba(37,211,102,0.40);
+  transition: transform var(--fast), box-shadow var(--fast);
+  /* Entry animation */
+  animation: bubblePop 0.5s var(--ease) forwards 1.5s;
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+@keyframes bubblePop {
+  to { opacity: 1; transform: scale(1); }
+}
+
+.wa-bubble:hover {
+  transform: scale(1.08);
+  box-shadow: 0 10px 36px rgba(37,211,102,0.50);
+}
+
+.wa-bubble-icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+/* Tooltip label — slides in from right on hover */
+.wa-bubble-label {
+  position: absolute;
+  right: 68px;
+  white-space: nowrap;
+  background: var(--black);
+  color: var(--white);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.4rem 0.85rem;
+  border-radius: 6px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity var(--fast), transform var(--fast);
+}
+
+/* Arrow on the tooltip pointing right */
+.wa-bubble-label::after {
+  content: '';
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-right: none;
+  border-left-color: var(--black);
+}
+
+.wa-bubble:hover .wa-bubble-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+/* ============================================================
+   GLOBAL SCROLL REVEAL
+   Any element with .reveal starts hidden.
+   JS IntersectionObserver adds .visible to animate it in.
+============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s var(--ease), transform 0.65s var(--ease);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ============================================================
+   MODAL — Privacy Policy & Terms of Service
+============================================================ */
+
+/* Dark backdrop — covers entire screen */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+
+  /* Hidden by default */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--normal) var(--ease);
+}
+
+/* .open added by JS to show the modal */
+.modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* White modal box */
+.modal-box {
+  background: var(--white);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 640px;
+  max-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.25);
+  transform: translateY(20px) scale(0.97);
+  transition: transform var(--normal) var(--ease);
+}
+
+.modal-backdrop.open .modal-box {
+  transform: translateY(0) scale(1);
+}
+
+/* Sticky header inside modal */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  flex-shrink: 0;
+}
+
+.modal-title {
+  font-family: var(--font-head);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--black);
+  letter-spacing: -0.01em;
+}
+
+/* Close (X) button */
+.modal-close {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-400);
+  transition: background var(--fast), color var(--fast);
+  flex-shrink: 0;
+}
+
+.modal-close svg { width: 16px; height: 16px; }
+
+.modal-close:hover {
+  background: var(--black);
+  color: var(--white);
+  border-color: var(--black);
+}
+
+/* Scrollable body */
+.modal-body {
+  padding: 1.75rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  /* Custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.15) transparent;
+}
+
+.modal-body::-webkit-scrollbar       { width: 5px; }
+.modal-body::-webkit-scrollbar-track { background: transparent; }
+.modal-body::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 3px; }
+
+.modal-updated {
+  font-size: 0.78rem;
+  color: var(--gray-400);
+  font-style: italic;
+  margin-bottom: 0.25rem;
+}
+
+/* Section headings inside modal */
+.modal-body h3 {
+  font-family: var(--font-head);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--black);
+  margin-top: 0.5rem;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--blue);
+}
+
+/* Body text inside modal */
+.modal-body p {
+  font-size: 0.88rem;
+  color: var(--gray-600);
+  line-height: 1.8;
+}
+
+/* Footer modal trigger buttons — look like links */
+.footer-modal-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.76rem;
+  color: rgba(255,255,255,0.3);
+  padding: 0;
+  font-family: var(--font-body);
+  transition: color var(--fast);
+}
+
+.footer-modal-btn:hover { color: var(--white); }
+
+/* Mobile modal */
+@media (max-width: 600px) {
+  .modal-box      { max-height: 90vh; border-radius: 12px; }
+  .modal-header   { padding: 1.25rem; }
+  .modal-body     { padding: 1.25rem; }
+}
+
+
+/* ============================================================
+   COOKIE CONSENT BANNER
+============================================================ */
+
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1800;
+  background: var(--white);
+  border-top: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 -4px 32px rgba(0,0,0,0.10);
+  padding: 1rem 2rem;
+
+  /* Hidden until JS shows it */
+  transform: translateY(100%);
+  transition: transform 0.4s var(--ease);
+}
+
+/* .visible added by JS if consent not yet given */
+.cookie-banner.visible {
+  transform: translateY(0);
+}
+
+.cookie-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.cookie-text {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 220px;
+}
+
+.cookie-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--blue);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.cookie-text p {
+  font-size: 0.83rem;
+  color: var(--gray-600);
+  line-height: 1.6;
+}
+
+/* "Learn more" inline button inside cookie text */
+.cookie-policy-btn {
+  background: none;
+  border: none;
+  color: var(--blue);
+  font-size: 0.83rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-family: var(--font-body);
+}
+
+.cookie-policy-btn:hover { color: var(--blue-dark); }
+
+/* Button row */
+.cookie-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+.cookie-btn {
+  padding: 0.55rem 1.25rem;
+  border-radius: var(--radius);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: background var(--fast), color var(--fast),
+              border-color var(--fast), transform var(--fast);
+}
+
+.cookie-btn:hover { transform: translateY(-1px); }
+
+/* Decline — outlined */
+.cookie-decline {
+  background: none;
+  border: 1.5px solid rgba(0,0,0,0.15);
+  color: var(--gray-600);
+}
+
+.cookie-decline:hover {
+  border-color: var(--black);
+  color: var(--black);
+}
+
+/* Accept — solid blue */
+.cookie-accept {
+  background: var(--blue);
+  border: 1.5px solid var(--blue);
+  color: var(--white);
+}
+
+.cookie-accept:hover { background: var(--blue-dark); border-color: var(--blue-dark); }
+
+/* Mobile */
+@media (max-width: 600px) {
+  .cookie-banner  { padding: 1rem 1.25rem; }
+  .cookie-inner   { flex-direction: column; gap: 1rem; }
+  .cookie-actions { width: 100%; }
+  .cookie-btn     { flex: 1; text-align: center; }
+}
