@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Makes the site scale correctly on phones and tablets -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Reezon Digitals — We turn ideas into high-impact digital experiences." />
+  <title>Reezon Digitals</title>
+
+  <!--
+    Fonts:
+    - "Manrope"  → headlines: geometric, confident, modern
+    - "DM Sans"  → body & nav: clean and legible at small sizes
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- FAVICON — see deployment guide below for sizes -->
+  <link rel="icon" type="/image/png" sizes="32x32" href="/img/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/img/android-chrome-192x192.png" />
+
+  <link rel="stylesheet" href="/css/style.css" type="text/css" />
+</head>
+<body>
+
+  <!-- =====================================================
+       NAVBAR
+       Logo left · Links right · Hamburger on mobile
+  ===================================================== -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+
+      <!-- LOGO
+           Drop your logo.png into the project folder.
+           The .logo-fallback span shows only when the image is missing. -->
+      <a href="#home" class="nav-logo">
+        <img src="/img/brand_logo.png" alt="Reezon Digitals logo" class="logo-img" />
+      </a>
+
+      <!-- DESKTOP NAV LINKS (Home · About · Services · Contact) -->
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+        <a href="#home"     class="nav-link">Home</a>
+        <a href="#about"    class="nav-link">About</a>
+        <a href="#services" class="nav-link">Services</a>
+        <a href="https://wa.me/2348072442555" class="nav-link" target="_blank" rel="noopener noreferrer">Contact</a>
+      </nav>
+
+      <!-- HAMBURGER — visible only on mobile -->
+      <button
+        class="hamburger"
+        id="hamburger"
+        aria-label="Toggle navigation"
+        aria-expanded="false"
+        aria-controls="navLinks"
+      >
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+
+    </div>
+  </header>
+
+
+  <!-- =====================================================
+       HERO SECTION — No image version
+       - Animated dot-grid canvas background (drawn by JS)
+       - Ambient blue glow blob (pure CSS)
+       - Floating agency badge
+       - Bold headline with typewriter effect on blue span
+       - Dual CTAs
+       - Stats bar (Projects · Satisfaction · Experience)
+       - Scroll-down cue
+  ===================================================== -->
+  <section class="hero" id="home">
+
+    <!-- Canvas filled by JS with an animated dot grid -->
+    <canvas class="hero-canvas" id="heroCanvas" aria-hidden="true"></canvas>
+
+    <!-- Large soft blue glow — CSS only, no image needed -->
+    <div class="hero-blob" aria-hidden="true"></div>
+
+    <div class="hero-inner">
+
+      <!-- Floating pill badge -->
+      <div class="hero-badge">
+        <span class="badge-dot" aria-hidden="true"></span>
+        Digital Solutions Agency
+      </div>
+
+      <!-- Headline: "From Imagination" static, "to Fruition." typed by JS -->
+      <h1 class="hero-headline">
+        From Imagination<br />
+        <span class="headline-blue" id="typeTarget"></span><span class="type-cursor" aria-hidden="true">|</span>
+      </h1>
+
+      <!-- Subtext -->
+      <p class="hero-subtext">
+        We design, build, and scale digital products that move your business
+        forward — from concept to launch and beyond.
+      </p>
+
+      <!-- CTA buttons -->
+      <div class="cta-group">
+
+        <a href="#services" class="btn-explore">
+          <span>Explore</span>
+          <span class="explore-arrow" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M4 10h12M10 4l6 6-6 6"/>
+            </svg>
+          </span>
+        </a>
+
+        <!-- ⚠️ Replace 2348000000000 with your real WhatsApp number -->
+        <a href="https://wa.me/2348072442555" class="btn-wa" target="_blank" rel="noopener noreferrer">
+          <svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/>
+            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.524 5.849L0 24l6.341-1.484A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.006-1.371l-.36-.214-3.732.873.936-3.629-.235-.373A9.818 9.818 0 1112 21.818z"/>
+          </svg>
+          Contact Us on WhatsApp
+        </a>
+
+      </div><!-- /cta-group -->
+
+      <!-- Stats bar -->
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num">50+</span>
+          <span class="stat-label">Projects Delivered</span>
+        </div>
+        <div class="stat-divider" aria-hidden="true"></div>
+        <div class="stat">
+          <span class="stat-num">98%</span>
+          <span class="stat-label">Client Satisfaction</span>
+        </div>
+        <div class="stat-divider" aria-hidden="true"></div>
+        <div class="stat">
+          <span class="stat-num">4+</span>
+          <span class="stat-label">Years Experience</span>
+        </div>
+      </div>
+
+    </div><!-- /hero-inner -->
+
+    <!-- Scroll-down arrow -->
+    <a href="#about" class="scroll-cue" aria-label="Scroll to About section">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
+    </a>
+
+  </section>
+
+
+  <!-- =====================================================
+       PLACEHOLDER SECTIONS
+       Sections to be built in future steps.
+       Do not remove — anchor links depend on these IDs.
+  ===================================================== -->
+  <!-- =====================================================
+       ABOUT SECTION
+       - White background
+       - Left col: pill tag + headline + 3 paragraphs + fact chips
+       - Right col: rounded image with blue CSS corner accents
+       - Scroll-triggered reveal animation on both columns
+  ===================================================== -->
+  <section class="about" id="about">
+    <div class="about-container">
+
+      <!-- LEFT: Text content -->
+      <div class="about-left about-reveal">
+
+        <span class="about-tag">Who We Are</span>
+
+        <h2 class="about-headline">About Us</h2>
+
+        <p class="about-para">
+          We are a team of experts united by purpose.
+        </p>
+
+        <p class="about-para">
+          REEZON Digitals is a technology and creative solutions company
+          dedicated to helping businesses build strong digital identities.
+        </p>
+
+        <p class="about-para">
+          We specialise in Web Development, UI/UX Design, Graphics Design,
+          Branding, and SEO — delivering solutions that are visually
+          compelling, high-performing, and aligned with each client's unique goals.
+        </p>
+
+        <!-- Quick-fact chips -->
+        <div class="about-chips">
+          <div class="chip">
+            <span class="chip-icon" aria-hidden="true">📅</span>
+            <div>
+              <span class="chip-label">Founded</span>
+              <span class="chip-value">2024</span>
+            </div>
+          </div>
+          <div class="chip">
+            <span class="chip-icon" aria-hidden="true">👥</span>
+            <div>
+              <span class="chip-label">Team</span>
+              <span class="chip-value">Creative Experts</span>
+            </div>
+          </div>
+          <div class="chip">
+            <span class="chip-icon" aria-hidden="true">🎯</span>
+            <div>
+              <span class="chip-label">Focus</span>
+              <span class="chip-value">Digital Growth</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Image -->
+      <div class="about-right about-reveal">
+        <div class="about-img-wrap">
+          <div class="about-corner about-corner-tl" aria-hidden="true"></div>
+          <div class="about-corner about-corner-br" aria-hidden="true"></div>
+          <!-- Replace about-img.jpg with your actual photo -->
+          <img
+            src="/img/about_image.jpg"
+            alt="Reezon Digitals team collaborating"
+            class="about-img"
+          />
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =====================================================
+       SERVICES SECTION
+       Layout (matching your UI):
+       - Black background
+       - Left col: "What We Do?" headline + image
+       - Centre: vertical divider line
+       - Right col: 5 services, each with number + title + text
+       - Hover: service highlights in blue
+       - Scroll-triggered fade-in per service (IntersectionObserver)
+  ===================================================== -->
+  <section class="services" id="services">
+    <div class="services-container">
+
+      <!-- ── LEFT COLUMN ── -->
+      <div class="services-left">
+
+        <!-- Section headline -->
+        <h2 class="services-headline">
+          What<br />We Do?
+        </h2>
+
+        <!-- Image block
+             Replace services-img.jpg with your own photo.
+             Ideally a person or workspace shot — matches your UI. -->
+        <div class="services-img-wrap">
+          <img
+            src="/img/services_image.jpg"
+            alt="Reezon Digitals team at work"
+            class="services-img"
+          />
+          <!-- Blue overlay that appears on hover — CSS only -->
+          <div class="services-img-overlay" aria-hidden="true"></div>
+        </div>
+
+      </div><!-- /services-left -->
+
+      <!-- ── CENTRE DIVIDER ── -->
+      <div class="services-divider" aria-hidden="true"></div>
+
+      <!-- ── RIGHT COLUMN — service list ── -->
+      <div class="services-right">
+
+        <!-- SERVICE 1 -->
+        <div class="service-item" data-index="0">
+          <span class="service-num" aria-hidden="true">01</span>
+          <div class="service-body">
+            <h3 class="service-title">Web Design &amp; Development</h3>
+            <p class="service-text">
+              Clean, functional websites that convert visitors into clients.
+            </p>
+          </div>
+        </div>
+
+        <!-- SERVICE 2 -->
+        <div class="service-item" data-index="1">
+          <span class="service-num" aria-hidden="true">02</span>
+          <div class="service-body">
+            <h3 class="service-title">Business Branding</h3>
+            <p class="service-text">
+              Strategic identity work that positions your company in the market.
+            </p>
+          </div>
+        </div>
+
+        <!-- SERVICE 3 -->
+        <div class="service-item" data-index="2">
+          <span class="service-num" aria-hidden="true">03</span>
+          <div class="service-body">
+            <h3 class="service-title">Graphic &amp; Print</h3>
+            <p class="service-text">
+              Visual storytelling through design, from digital assets to
+              large format prints.
+            </p>
+          </div>
+        </div>
+
+        <!-- SERVICE 4 -->
+        <div class="service-item" data-index="3">
+          <span class="service-num" aria-hidden="true">04</span>
+          <div class="service-body">
+            <h3 class="service-title">UI / UX Design</h3>
+            <p class="service-text">
+              Intuitive interfaces that delight users and drive engagement
+              across every screen.
+            </p>
+          </div>
+        </div>
+
+        <!-- SERVICE 5 -->
+        <div class="service-item" data-index="4">
+          <span class="service-num" aria-hidden="true">05</span>
+          <div class="service-body">
+            <h3 class="service-title">Search Engine Optimisation</h3>
+            <p class="service-text">
+              Our SEO services are designed to improve your online visibility
+              and help your business climb to the top of search engine results.
+            </p>
+          </div>
+        </div>
+
+        <!-- CTA at bottom of services list -->
+        <!-- Replace 2348000000000 with your real WhatsApp number -->
+        <a
+          href="https://wa.me/2348072442555"
+          class="services-cta"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Start a Project
+          <svg class="services-cta-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <path d="M4 10h12M10 4l6 6-6 6"/>
+          </svg>
+        </a>
+
+      </div><!-- /services-right -->
+
+    </div><!-- /services-container -->
+  </section>
+  <!-- =====================================================
+       TESTIMONIALS SECTION
+       - White/light-grey background
+       - Left: vertical timeline with clickable avatar buttons
+       - Right: active quote with large decorative quotemark
+       - Auto-rotates every 5s; click avatar to jump to review
+       - Initials avatars — swap in real photos any time
+  ===================================================== -->
+  <section class="testimonials" id="testimonials">
+    <div class="testi-container">
+
+      <!-- Section header -->
+      <div class="testi-header testi-reveal">
+        <h2 class="testi-headline">Customer Reviews</h2>
+           <div class="testi-accent-bar" aria-hidden="true"></div>
+        <p class="testi-subhead">What our clients say about working with us</p>
+      </div>
+
+      <div class="testi-body">
+
+        <!-- LEFT: avatar timeline -->
+        <div class="testi-avatars" id="testiAvatars">
+
+          <button class="avatar-btn active" data-index="0" aria-label="Review by Chidi Okonkwo">
+            <div class="avatar-img-wrap">
+              <!-- Built-in male SVG avatar — no photo needed -->
+              <svg class="avatar-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="32" cy="32" r="32" fill="#0f75bc" opacity="0.12"/>
+                <!-- Head -->
+                <circle cx="32" cy="24" r="10" fill="#0f75bc" opacity="0.7"/>
+                <!-- Shoulders / body -->
+                <path d="M12 56c0-11 9-18 20-18s20 7 20 18" fill="#0f75bc" opacity="0.5"/>
+              </svg>
+            </div>
+            <div class="avatar-meta">
+              <span class="avatar-name">Flusso Apparel</span>
+              <span class="avatar-rating">
+                <svg class="star" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .5l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9L4.4 11.5l.7-4L2.2 4.7l4-.6z"/></svg>
+                4.9 &middot; Aug 2024.
+              </span>
+            </div>
+          </button>
+
+          <button class="avatar-btn" data-index="1" aria-label="Review by Amara Nwosu">
+            <div class="avatar-img-wrap">
+              <!-- Built-in female SVG avatar — no photo needed -->
+              <svg class="avatar-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="32" cy="32" r="32" fill="#0f75bc" opacity="0.12"/>
+                <!-- Head -->
+                <circle cx="32" cy="23" r="9" fill="#0f75bc" opacity="0.7"/>
+                <!-- Hair -->
+                <path d="M23 23 Q20 12 32 11 Q44 12 41 23" fill="#0f75bc" opacity="0.85"/>
+                <!-- Shoulders with hair flowing -->
+                <path d="M13 56c0-10 8.5-17 19-17s19 7 19 17" fill="#0f75bc" opacity="0.5"/>
+                <path d="M20 39 Q18 46 17 56" stroke="#0f75bc" stroke-width="3" opacity="0.4" stroke-linecap="round"/>
+                <path d="M44 39 Q46 46 47 56" stroke="#0f75bc" stroke-width="3" opacity="0.4" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="avatar-meta">
+              <span class="avatar-name">TMP Lagos</span>
+              <span class="avatar-rating">
+                <svg class="star" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .5l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9L4.4 11.5l.7-4L2.2 4.7l4-.6z"/></svg>
+                5.0 &middot; Jan 2025
+              </span>
+            </div>
+          </button>
+
+          <button class="avatar-btn" data-index="2" aria-label="Review by Tunde Adeyemi">
+            <div class="avatar-img-wrap">
+              <!-- Built-in male SVG avatar variant 2 — no photo needed -->
+              <svg class="avatar-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="32" cy="32" r="32" fill="#0c5f99" opacity="0.13"/>
+                <!-- Head -->
+                <circle cx="32" cy="24" r="10" fill="#0c5f99" opacity="0.7"/>
+                <!-- Collar / shirt detail -->
+                <path d="M12 56c0-11 9-18 20-18s20 7 20 18" fill="#0c5f99" opacity="0.5"/>
+                <path d="M28 38 L32 44 L36 38" fill="#0c5f99" opacity="0.3"/>
+              </svg>
+            </div>
+            <div class="avatar-meta">
+              <span class="avatar-name">Head to Toe</span>
+              <span class="avatar-rating">
+                <svg class="star" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .5l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9L4.4 11.5l.7-4L2.2 4.7l4-.6z"/></svg>
+                4.8 &middot; Mar 2025
+              </span>
+            </div>
+          </button>
+
+        </div>
+
+        <!-- RIGHT: quote display -->
+        <div class="testi-quote-wrap">
+
+          <span class="testi-bigquote" aria-hidden="true">&ldquo;</span>
+
+          <div class="testi-quotes" id="testiQuotes">
+
+            <div class="testi-quote active" data-index="0">
+              <p class="quote-text">
+                Reezon Digitals delivered quality designs that exceeded our expectations, and everything was completed right on time. Their professionalism and creativity made the process effortless.
+              </p>
+              <div class="quote-author">
+                <span class="quote-name">F. L.</span>
+                <span class="quote-role">CEO, Flusso Apparel</span>
+              </div>
+            </div>
+
+            <div class="testi-quote" data-index="1">
+              <p class="quote-text">
+                We are impressed with Reezon Digitals’ work — the designs were top quality, the prints were crisp, and delivery was timely. They truly understand how to bring ideas to life.
+              </p>
+              <div class="quote-author">
+                <span class="quote-name">M. L.</span>
+                <span class="quote-role">Res. Pst., TMP Lagos</span>
+              </div>
+            </div>
+
+            <div class="testi-quote" data-index="2">
+              <p class="quote-text">
+                Our experience with Reezon Digitals was outstanding. Their customer-centric approach and thoughtful branding process made us feel valued, and the timely delivery sealed the deal. We couldn’t have asked for a better partner.
+              </p>
+              <div class="quote-author">
+                <span class="quote-name">F. A.</span>
+                <span class="quote-role">CEO, Head to Toe</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Dot nav -->
+          <div class="testi-dots" id="testiDots">
+            <button class="testi-dot active" data-index="0" aria-label="Review 1"></button>
+            <button class="testi-dot" data-index="1" aria-label="Review 2"></button>
+            <button class="testi-dot" data-index="2" aria-label="Review 3"></button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- =====================================================
+       FOOTER — Inspo-matched design
+       TOP:  Large CTA headline left + arrow button right
+       MID:  Horizontal divider
+       GRID: 4 cols — Brand+socials | Quick Links | Company | Contact
+       BOT:  Copyright bar
+  ===================================================== -->
+  <footer class="footer" id="footer">
+
+    <!-- ── TOP: CTA banner ── -->
+    <div class="footer-cta-band">
+      <div class="footer-cta-inner">
+        <h2 class="footer-cta-headline">
+          The Future You<br />Imagine Starts Here!
+        </h2>
+        <!-- Arrow button → opens WhatsApp. Replace number. -->
+        <a
+          href="https://wa.me/2348072442555?text=Hi%20Reezon%20Digitals%2C%20I%27d%20like%20to%20discuss%20a%20project."
+          class="footer-cta-arrow"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Start a conversation on WhatsApp"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M7 17L17 7M7 7h10v10"/>
+          </svg>
+        </a>
+      </div>
+      <!-- Thin divider line below CTA band -->
+      <div class="footer-divider" aria-hidden="true"></div>
+    </div>
+
+    <!-- ── MIDDLE: 4-column grid ── -->
+    <div class="footer-main">
+      <div class="footer-grid">
+
+        <!-- COL 1: Brand + tagline + socials -->
+        <div class="footer-col footer-brand">
+          <a href="#home" class="footer-logo">
+            <img src="/img/mainbrnd.png" alt="Reezon Digitals" class="footer-logo-img" />
+          </a>
+          <!-- Social icons row -->
+          <div class="footer-socials">
+            <!-- WhatsApp -->
+            <a href="https://wa.me/2348072442555" class="social-icon" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.524 5.849L0 24l6.341-1.484A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.006-1.371l-.36-.214-3.732.873.936-3.629-.235-.373A9.818 9.818 0 1112 21.818z"/></svg>
+            </a>
+
+            <!-- Instagram: replace YOUR_INSTAGRAM -->
+            <a href="https://www.instagram.com/reezondgtl" class="social-icon" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- COL 2: Quick Links -->
+        <div class="footer-col">
+          <h4 class="footer-col-title">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="#services"  class="footer-link">Services</a></li>
+            <li><a href="#about"     class="footer-link">About</a></li>
+            <li>
+              <a href="https://www.behance.net/reezondgtl" class="footer-link" target="_blank" rel="noopener noreferrer">
+                Portfolio
+              </a>
+            </li>
+            <li>
+              <a href="https://wa.me/2348072442555?text=Hi%20Reezon%20Digitals%2C%20I%27d%20like%20to%20discuss%20a%20project." class="footer-link" target="_blank" rel="noopener noreferrer">
+                Contact
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- COL 3: Company -->
+        <div class="footer-col">
+          <h4 class="footer-col-title">Company</h4>
+          <ul class="footer-links">
+            <li><a href="#about"        class="footer-link">About Us</a></li>
+            <li><a href="#testimonials" class="footer-link">Reviews</a></li>
+            <li><a href="#services"     class="footer-link">What We Do</a></li>
+            <li>
+              <a href="https://wa.me/2348072442555?text=Hi%20Reezon%20Digitals%2C%20I%27d%20like%20to%20discuss%20a%20project." class="footer-link" target="_blank" rel="noopener noreferrer">
+                Work With Us
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- COL 4: Contact -->
+        <div class="footer-col">
+          <h4 class="footer-col-title">Contact</h4>
+          <ul class="footer-links footer-contact-list">
+            <li class="footer-contact-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="contact-icon" aria-hidden="true">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                <circle cx="12" cy="9" r="2.5"/>
+              </svg>
+              <span>Lagos, Nigeria</span>
+            </li>
+            <li class="footer-contact-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="contact-icon" aria-hidden="true">
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.22 1.18 2 2 0 012.22 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.09a16 16 0 006 6l.66-.66a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/>
+              </svg>
+              <!-- Replace with your real WhatsApp number (display format) -->
+              <a href="https://wa.me/2348072442555" class="footer-link" target="_blank" rel="noopener noreferrer">
+                +234 800 000 0000
+              </a>
+            </li>
+            <li class="footer-contact-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="contact-icon" aria-hidden="true">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              <!-- Replace with your real email -->
+              <a href="mailto:rdinquiries01@gmail.com
+" class="footer-link">
+                hello@reezondigitals.com
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── BOTTOM: Copyright bar ── -->
+    <div class="footer-bottom">
+      <div class="footer-bottom-inner">
+        <p class="footer-copy">
+          Copyright &copy; 2026 All Rights Reserved — Reezon Digitals
+        </p>
+        <div class="footer-bottom-links">
+          <button class="footer-bottom-link footer-modal-btn" id="openPrivacy">Privacy Policy</button>
+          <span class="footer-bottom-sep" aria-hidden="true">|</span>
+          <button class="footer-bottom-link footer-modal-btn" id="openTerms">Terms of Service</button>
+        </div>
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- SCROLL TO TOP button — appears after scrolling 400px down -->
+  <button class="scroll-top" id="scrollTop" aria-label="Scroll back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+  </button>
+
+  <!-- FLOATING WHATSAPP instant chat bubble — always visible -->
+  <!-- Replace 2348000000000 with your real number -->
+  <a
+    href="https://wa.me/2348072442555?text=Hi%20Reezon%20Digitals%2C%20I%27d%20like%20to%20discuss%20a%20project."
+    class="wa-bubble"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Chat with us on WhatsApp"
+  >
+    <!-- WhatsApp icon -->
+    <svg class="wa-bubble-icon" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/>
+      <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.524 5.849L0 24l6.341-1.484A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.006-1.371l-.36-.214-3.732.873.936-3.629-.235-.373A9.818 9.818 0 1112 21.818z"/>
+    </svg>
+    <!-- Tooltip label -->
+    <span class="wa-bubble-label">Chat with us</span>
+  </a>
+
+
+  <!-- =====================================================
+       PRIVACY POLICY MODAL
+       Opens when "Privacy Policy" footer link is clicked.
+       Closed by X button, backdrop click, or Escape key.
+  ===================================================== -->
+  <div class="modal-backdrop" id="privacyModal" role="dialog" aria-modal="true" aria-labelledby="privacyTitle">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 class="modal-title" id="privacyTitle">Privacy Policy</h2>
+        <button class="modal-close" id="closePrivacy" aria-label="Close privacy policy">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-updated">Last updated: January 2026</p>
+
+        <h3>1. Who We Are</h3>
+        <p>Reezon Digitals is a digital solutions company based in Lagos, Nigeria. We provide web design, branding, graphic design, UI/UX, and SEO services. This website is informational only.</p>
+
+        <h3>2. Information We Do Not Collect</h3>
+        <p>We do not operate any contact forms, login systems, or databases on this website. We do not collect, store, or process any personal data such as names, email addresses, or payment information through this site.</p>
+
+        <h3>3. WhatsApp Communication</h3>
+        <p>When you click our WhatsApp links, you are redirected to WhatsApp — a third-party platform governed by WhatsApp's own privacy policy. Any communication that occurs is subject to WhatsApp's terms. We do not receive or store any data from that interaction on our servers.</p>
+
+        <h3>4. Third-Party Services</h3>
+        <p>This website is hosted on third-party infrastructure (such as Netlify or Vercel) which may collect anonymous server logs including IP addresses for security purposes. We use Google Fonts, which may log font requests. Neither service links this data to any personal identity.</p>
+
+        <h3>5. Cookies</h3>
+        <p>This website uses a single functional cookie to remember your cookie consent preference. No advertising, tracking, or analytics cookies are used.</p>
+
+        <h3>6. Children's Privacy</h3>
+        <p>This website is not directed at children under the age of 13. We do not knowingly collect information from minors.</p>
+
+        <h3>7. Changes to This Policy</h3>
+        <p>We may update this policy occasionally. Any changes will be reflected on this page with an updated date.</p>
+
+        <h3>8. Contact</h3>
+        <p>For any privacy-related questions, reach us on WhatsApp via the link on this website.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================
+       TERMS OF SERVICE MODAL
+  ===================================================== -->
+  <div class="modal-backdrop" id="termsModal" role="dialog" aria-modal="true" aria-labelledby="termsTitle">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 class="modal-title" id="termsTitle">Terms of Service</h2>
+        <button class="modal-close" id="closeTerms" aria-label="Close terms of service">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-updated">Last updated: January 2026</p>
+
+        <h3>1. Acceptance of Terms</h3>
+        <p>By accessing and using the Reezon Digitals website, you accept and agree to be bound by these Terms of Service. If you do not agree, please discontinue use of this website.</p>
+
+        <h3>2. Use of This Website</h3>
+        <p>This website is provided for informational purposes only. You may not use this website for any unlawful purpose or in any way that could damage, disable, or impair the site.</p>
+
+        <h3>3. Intellectual Property</h3>
+        <p>All content on this website — including text, graphics, logos, and design — is the property of Reezon Digitals and is protected by applicable copyright and intellectual property laws. You may not reproduce or redistribute any content without written permission.</p>
+
+        <h3>4. Service Engagements</h3>
+        <p>Any service agreement between Reezon Digitals and a client is governed by a separate contract signed at the time of engagement. Nothing on this website constitutes a binding offer or guarantee of services.</p>
+
+        <h3>5. Limitation of Liability</h3>
+        <p>Reezon Digitals is not liable for any direct, indirect, or consequential damages arising from your use of this website or any linked third-party platforms including WhatsApp or Behance.</p>
+
+        <h3>6. External Links</h3>
+        <p>This website contains links to third-party platforms (WhatsApp, Behance, LinkedIn, Instagram). We are not responsible for the content or privacy practices of those platforms.</p>
+
+        <h3>7. Governing Law</h3>
+        <p>These terms are governed by the laws of the Federal Republic of Nigeria. Any disputes shall be subject to the exclusive jurisdiction of Nigerian courts.</p>
+
+        <h3>8. Changes to Terms</h3>
+        <p>We reserve the right to update these terms at any time. Continued use of the site after changes constitutes acceptance of the revised terms.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================
+       COOKIE CONSENT BANNER
+       Appears on first visit at the bottom of the screen.
+       Dismissed state saved to localStorage so it never
+       shows again on return visits.
+  ===================================================== -->
+  <div class="cookie-banner" id="cookieBanner" role="region" aria-label="Cookie consent">
+    <div class="cookie-inner">
+      <div class="cookie-text">
+        <svg class="cookie-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h2v-6h-2v6zm0-8h2V7h-2v2z"/>
+        </svg>
+        <p>
+          This site uses a single cookie to remember your preferences.
+          No tracking or advertising cookies are used.
+          <button class="cookie-policy-btn" id="cookiePolicyBtn">Learn more</button>
+        </p>
+      </div>
+      <div class="cookie-actions">
+        <button class="cookie-btn cookie-decline" id="cookieDecline">Decline</button>
+        <button class="cookie-btn cookie-accept" id="cookieAccept">Accept</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/script.js"></script>
+</body>
+</html>
